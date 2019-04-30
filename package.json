@@ -1,0 +1,9 @@
+{
+  "name": "todo-list",
+  "scripts": {
+    "dev": "nuxt"
+  },
+  "dependencies": {
+    "nuxt": "^2.6.3"
+  }
+}
