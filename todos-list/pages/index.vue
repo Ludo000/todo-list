@@ -10,15 +10,17 @@
 
 <script>
 
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 
 export default {
   computed: {
     todos () {
+      this.$store.dispatch('todos/getTodos')
       return this.$store.state.todos.list
     }
   },
   methods: {
+
     addTodo (e) {
       this.$store.commit('todos/add', e.target.value)
       e.target.value = ''
@@ -26,6 +28,7 @@ export default {
     ...mapMutations({
       toggle: 'todos/toggle'
     })
+    
   }
 }
 </script>
