@@ -78,7 +78,7 @@ export const actions = {
                     userId : todo.userId,
                     id : todo.id,
                     title : todo.title,
-                    completed : todo.completed
+                    completed : !todo.completed
                 }).then(()=>{
                     commit('toggle', todo)
                 })
