@@ -102,6 +102,7 @@ body{
    border-radius : 20px 0 0 20px ;
    border-right : solid 1px silver;
    height : 80vh;
+   min-width : 280px;
  }
 .sticky-container
 {
@@ -124,14 +125,18 @@ body{
 .todo-container
 {
     width : 33%;
+    min-width : 200px;
 }
 .dones-container
 {
     height : 70vh;
+     min-width : 250px;
+   
 }
 .done-container
 {
     width : 100%;
+    min-width : 200px;
 }
 
 .bigcard-done
