@@ -4,10 +4,10 @@
   <v-layout align-center justify-center row>
 
       <v-flex xs10 class="bigcard">
-       <v-flex xs12 class="text-xs-center display-1 my-1">À faire</v-flex>
+       <v-flex xs12 class="text-xs-center title my-1">À faire</v-flex>
         <input class="todos-input" placeholder="Entrez ici votre nouvelle chose à faire" @keyup.enter="addTodo"/>
         <br/><br/>
-        <v-container grid-list-md text-xs-center class="sticky-container">
+        <v-container grid-list-md text-xs-center id="sticky" class="sticky-container">
           <v-layout wrap>
           <div v-for="todo in todos" :key="todo.id" class="todo-container">
             <v-flex v-if="!todo.done">
@@ -29,7 +29,7 @@
       </v-flex>
 
       <v-flex xs2 class="bigcard bigcard-done">
-                <v-flex xs12 class="text-xs-center display-1 my-1">Fait</v-flex>
+                <v-flex xs12 class="text-xs-center title my-1">Fait</v-flex>
 
         <v-container grid-list-md text-xs-center class="sticky-container dones-container">
           <v-layout wrap>
@@ -86,11 +86,14 @@ export default {
     addTodo (e) {
       this.$store.commit('todos/add', e.target.value)
       this.$store.dispatch('todos/sendTodos', e.target.value)
+      var container = this.$el.querySelector("#sticky");
+      container.scrollTop = container.scrollHeight;
 
       e.target.value = ''
     },
     ...mapMutations({
-      toggle: 'todos/toggle'
+      toggle: 'todos/toggle',
+      remove : 'todos/remove'
     })
     
   }
