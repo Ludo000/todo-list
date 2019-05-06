@@ -8,8 +8,8 @@
             <v-container grid-list-md text-xs-center id="sticky" class="sticky-container">
               <v-layout wrap>
               <div v-for="todo in todos" :key="todo.id" class="todo-container">
-                <v-flex v-if="!todo.completed">
-                  <v-card  color="#ffe260">
+                <v-flex v-if="!todo.completed" :class="todo.important ? 'importantTodo' : ''" >
+                  <v-card  color="#ffe260" :class="todo.later ? 'laterTodo' : ''" >
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn flat color="red" @click="actionDeleteTodo(todo)">✖</v-btn>
@@ -144,6 +144,22 @@ body{
   border-radius : 0 20px 20px 0 ;
   border-right : none;
 }
+
+.importantTodo
+{
+  background-color: red;
+  font-size: 1.2em;
+  font-style : bold;
+}
+
+.laterTodo
+{
+  background-color: grey;
+  font-size: 0.8em;
+  font-style : italic;
+  
+}
+
 
 </style>
 

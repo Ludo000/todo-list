@@ -14,11 +14,14 @@ export const state = () => ({
 export const mutations = {
     add (state, text) {
         state.list.push({
-            id : state.list.length,
+            id : state.list.length+1,
             userId : 1,
             title: text,
-            completed: false
+            completed: false,
+            important : text.search("#important")>=1,
+            later : text.search("#later")>=1
           })
+          console.log(state.list[state.list.length-1])
     },
     remove (state, todo ) {
         state.list.splice(state.list.indexOf(todo), 1)
