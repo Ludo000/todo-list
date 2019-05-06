@@ -14,6 +14,8 @@ export const state = () => ({
 export const mutations = {
     add (state, text) {
         state.list.push({
+            id : state.list.length,
+            userId : 1,
             title: text,
             completed: false
           })
@@ -40,35 +42,34 @@ export const mutations = {
 export const actions = {
     async actionGetTodos({ state, commit }) {
         try {
-            let response = await axios.get('https://jsonplaceholder.typicode.com/todos').then((r) => {       
+            await axios.get('https://jsonplaceholder.typicode.com/todos').then((r) => {       
                 commit('setTodos', r.data);
-                return r.data[r.data.lenth -1];
               })
         } catch (error) {
+            console.error("actionGetTodos : " + error);
         }
     },
     async actionAddTodo({ state, commit }, payload){
         try {
-            let response = await axios.post('https://jsonplaceholder.typicode.com/todos',{
+            await axios.post('https://jsonplaceholder.typicode.com/todos',{
                     userId : 1,
-                    id : state.list.lenght,
+                    id : state.list.length,
                     title : payload,
                     completed : false
-                }).then((r)=>{
+                }).then(()=>{
                     commit('add', payload)
                 })
         } catch (error) {
+            console.error("actionAddTodo : " + error);
         }
     },
     async actionDeleteTodo({ state, commit }, payload){
         try {
-            console.log(state)
-            console.log(commit)
-            console.log(payload)
-            let response = await axios.delete('https://jsonplaceholder.typicode.com/todos/'   + payload.id).then((r)=>{
+            await axios.delete('https://jsonplaceholder.typicode.com/todos/'   + payload.id).then(()=>{
                 commit('remove', payload)
             })
         } catch (error) {
+            console.error("actionDeleteTodo : " + error);
         }
     }
 }
