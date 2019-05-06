@@ -63,13 +63,27 @@ export const actions = {
             console.error("actionAddTodo : " + error);
         }
     },
-    async actionDeleteTodo({ state, commit }, payload){
+    async actionDeleteTodo({ state, commit }, todo){
         try {
-            await axios.delete('https://jsonplaceholder.typicode.com/todos/'   + payload.id).then(()=>{
-                commit('remove', payload)
+            await axios.delete('https://jsonplaceholder.typicode.com/todos/' + todo.id).then(()=>{
+                commit('remove', todo)
             })
         } catch (error) {
             console.error("actionDeleteTodo : " + error);
+        }
+    },
+    async actionToggleTodo({ state, commit }, todo){
+        try {
+            await axios.put('https://jsonplaceholder.typicode.com/todos/' + todo.id,{
+                    userId : todo.userId,
+                    id : todo.id,
+                    title : todo.title,
+                    completed : todo.completed
+                }).then(()=>{
+                    commit('toggle', todo)
+                })
+        } catch (error) {
+            console.error("actionToggleTodo : " + error);
         }
     }
 }

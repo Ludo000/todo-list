@@ -17,7 +17,7 @@
                     <v-card-title>{{ todo.title }}</v-card-title>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn flat color="green" @click="toggle(todo)">✔</v-btn>
+                      <v-btn flat color="green" @click="actionToggleTodo(todo)">✔</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-flex>
@@ -33,7 +33,7 @@
                     <v-flex v-if="todo.completed">
                       <v-card  color="#ffe260">
                         <v-card-actions>
-                          <v-btn flat color="orange" @click="toggle(todo)">⮌</v-btn>
+                          <v-btn flat color="orange" @click="actionToggleTodo(todo)">⮌</v-btn>
                           <v-spacer></v-spacer>
                           <v-btn flat color="red" @click="actionDeleteTodo(todo)" >✖</v-btn>
                         </v-card-actions>
@@ -82,7 +82,8 @@ export default {
     ...mapActions({
      actionGetTodos: 'todos/actionGetTodos',
      actionAddTodo: 'todos/actionAddTodo',
-     actionDeleteTodo: 'todos/actionDeleteTodo'
+     actionDeleteTodo: 'todos/actionDeleteTodo',
+     actionToggleTodo: 'todos/actionToggleTodo'
     })
     
   }
