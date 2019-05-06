@@ -1,9 +1,5 @@
 <template>
 <v-container grid-list-lg>
-  <v-layout row>
-      <v-flex xs12 class="text-xs-center display-1 font-weight-black my-2">Liste à faire</v-flex>
-  </v-layout>
-    
 
   <v-layout align-center justify-center row>
 
@@ -32,7 +28,7 @@
         </v-container>
       </v-flex>
 
-      <v-flex xs2 class="bigcard">
+      <v-flex xs2 class="bigcard bigcard-done">
                 <v-flex xs12 class="text-xs-center display-1 my-1">Fait</v-flex>
 
         <v-container grid-list-md text-xs-center class="sticky-container dones-container">
@@ -103,22 +99,22 @@ export default {
 
 <style>
 body{
-  background-color: #f8f7f7;
+  background-color: #e6e6e6;
 }
 
 .bigcard
  {
-   background-color :#e4e4e4;
-   margin : 20px;
-   border-radius : 20px;
+   background-color :white;
+
+   border-radius : 20px 0 0 20px ;
+   border-right : solid 1px silver;
    height : 80vh;
  }
 .sticky-container
 {
-  background-color : white;
+  background-color :#fcfcfc;
   height : 60vh;
   overflow: auto;
-  border-radius : 10px;
 }
 
 .todos-input
@@ -128,6 +124,8 @@ body{
   background-color : white;
   padding : 20px;
   border-radius : 50px;
+  border : solid 2px rgb(236, 236, 236);
+
 }
 
 .todo-container
@@ -141,6 +139,12 @@ body{
 .done-container
 {
     width : 100%;
+}
+
+.bigcard-done
+{
+  border-radius : 0 20px 20px 0 ;
+  border-right : none;
 }
 
 </style>
