@@ -3,7 +3,7 @@
     <v-layout align-center justify-center row>
         <v-flex xs10 class="bigcard">
           <v-flex xs12 class="text-xs-center title my-1">À faire</v-flex>
-            <input class="todos-input" placeholder="Entrez ici votre nouvelle chose à faire" @keyup.enter="addTodo"/>
+            <input class="todos-input" placeholder="Entrez ici une nouvelle chose à faire" @keyup.enter="addTodo"/>
             <br/><br/>
             <v-container grid-list-md text-xs-center id="sticky" class="sticky-container">
               <v-layout wrap>
