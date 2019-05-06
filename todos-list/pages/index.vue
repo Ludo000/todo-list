@@ -3,20 +3,22 @@
   <v-layout row>
       <v-flex xs12 class="text-xs-center display-1 font-weight-black my-2">Liste à faire</v-flex>
   </v-layout>
-    <input class="todos-input" placeholder="Entrez ici votre nouvelle chose à faire" @keyup.enter="addTodo"/>
+    
 
   <v-layout align-center justify-center row>
 
-      <v-flex xs6 class="bigcard">
-        <v-flex xs12 class="text-xs-center display-1 my-1">À faire</v-flex>
-        <v-container grid-list-md text-xs-center class="todos-container">
+      <v-flex xs10 class="bigcard">
+       <v-flex xs12 class="text-xs-center display-1 my-1">À faire</v-flex>
+        <input class="todos-input" placeholder="Entrez ici votre nouvelle chose à faire" @keyup.enter="addTodo"/>
+        <br/><br/>
+        <v-container grid-list-md text-xs-center class="sticky-container">
           <v-layout wrap>
           <div v-for="todo in todos" :key="todo.id" class="todo-container">
             <v-flex v-if="!todo.done">
               <v-card  color="#ffe260">
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn flat color="orange" @click="remove(todo)">✖</v-btn>
+                  <v-btn flat color="red" @click="remove(todo)">✖</v-btn>
                 </v-card-actions>
                 <v-card-title :class="{ done: todo.done }">{{ todo.text }}</v-card-title>
                 <v-card-actions>
@@ -30,12 +32,12 @@
         </v-container>
       </v-flex>
 
-      <v-flex xs6 class="bigcard">
+      <v-flex xs2 class="bigcard">
                 <v-flex xs12 class="text-xs-center display-1 my-1">Fait</v-flex>
 
-        <v-container grid-list-md text-xs-center class="todos-container">
+        <v-container grid-list-md text-xs-center class="sticky-container dones-container">
           <v-layout wrap>
-            <div v-for="todo in todos" :key="todo.id"  class="todo-container">
+            <div v-for="todo in todos" :key="todo.id"  class="done-container">
             <v-flex v-if="todo.done">
               <v-card  color="#ffe260">
 
@@ -109,8 +111,9 @@ body{
    background-color :#e4e4e4;
    margin : 20px;
    border-radius : 20px;
+   height : 80vh;
  }
-.todos-container
+.sticky-container
 {
   background-color : white;
   height : 60vh;
@@ -131,5 +134,14 @@ body{
 {
     width : 33%;
 }
+.dones-container
+{
+    height : 70vh;
+}
+.done-container
+{
+    width : 100%;
+}
+
 </style>
 
