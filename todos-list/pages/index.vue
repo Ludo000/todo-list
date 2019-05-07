@@ -3,7 +3,7 @@
     <v-layout align-center justify-center row>
         <v-flex xs10 class="big-section">
           <v-flex xs12 class="text-xs-center title my-1">À faire</v-flex>
-            <input class="todos-input" placeholder="Entrez ici une nouvelle chose à faire" @keyup.enter="addTodo"/>
+            <input type="text" class="todos-input" placeholder="Entrez ici une nouvelle chose à faire" @keyup.enter="addTodo"/>
             <br/><br/>
             <v-container grid-list-md text-xs-center id="sticky" class="sticky-container">
               <v-layout wrap>
@@ -11,10 +11,12 @@
                 <v-flex v-if="!todo.completed" :class="todo.important ? 'important-todo' : ''" >
                   <v-card  color="#ffe260" :class="todo.later ? 'later-todo' : ''" >
                     <v-card-actions>
+                      <v-btn flat color="red" @click="toggleEdit(todo)">📝</v-btn>
                       <v-spacer></v-spacer>
                       <v-btn flat color="red" @click="actionDeleteTodo(todo)">✖</v-btn>
                     </v-card-actions>
-                    <v-card-title>{{ todo.title }}</v-card-title>
+                    <v-card-title v-if="!todo.isCurrentlyEdited">{{ todo.id }}. {{ todo.title }}</v-card-title>
+                    <input type="text" :value="todo.title" v-if="todo.isCurrentlyEdited" class="todos-input"  @keyup.enter="actionEditTodo(todo, todo.title)"/>
                     <v-card-actions>
                       <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'active-btn' : ''" >!</v-btn>
                       <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'active-btn' : ''" >🕐</v-btn>
@@ -35,15 +37,19 @@
                     <v-flex v-if="todo.completed" :class="todo.important ? 'important-todo' : ''">
                       <v-card  color="#ffe260" :class="todo.later ? 'later-todo' : ''" >
                         <v-card-actions>
-                          <v-btn flat color="orange" @click="actionToggleTodo(todo)">⮌</v-btn>
+                          <v-btn flat color="red" @click="toggleEdit(todo)">📝</v-btn>
+                          
                           <v-spacer></v-spacer>
                           <v-btn flat color="red" @click="actionDeleteTodo(todo)" >✖</v-btn>
                         </v-card-actions>
-                      <v-card-title>{{ todo.title }}</v-card-title>
+                      <v-card-title v-if="!todo.isCurrentlyEdited">{{ todo.id }}. {{ todo.title }}</v-card-title>
+                    <input type="text" :value="todo.title" v-if="todo.isCurrentlyEdited" class="todos-input"  @keyup.enter="actionEditTodo(todo, todo.title)"/>
                       <v-card-actions>
                         <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'active-btn' : ''">!</v-btn>
                         <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'active-btn' : ''">🕐</v-btn>
+
                         <v-spacer></v-spacer>
+                        <v-btn flat color="orange" @click="actionToggleTodo(todo)">⮌</v-btn>
                       </v-card-actions>
                      </v-card>
                    </v-flex>
@@ -80,7 +86,8 @@ export default {
     },
     ...mapMutations({
       toggle: 'todos/toggle',
-      remove : 'todos/remove'
+      remove : 'todos/remove',
+      toggleEdit : 'todos/toggleEdit'
     }),
     ...mapActions({
      actionGetTodos: 'todos/actionGetTodos',
@@ -88,7 +95,8 @@ export default {
      actionDeleteTodo: 'todos/actionDeleteTodo',
      actionToggleTodo: 'todos/actionToggleTodo',
      actionToggleImportantTodo: 'todos/actionToggleImportantTodo',
-     actionToggleLaterTodo: 'todos/actionToggleLaterTodo'
+     actionToggleLaterTodo: 'todos/actionToggleLaterTodo',
+     actionEditTodo: 'todos/actionEditTodo'
     })
     
   }
@@ -107,7 +115,7 @@ body{
    border-radius : 20px 0 0 20px ;
    border-right : solid 1px silver;
    height : 80vh;
-   min-width : 280px;
+   min-width : 380px;
  }
 .sticky-container
 {
@@ -136,13 +144,13 @@ body{
 .dones-container
 {
     height : 70vh;
-     min-width : 250px;
+    min-width : 350px;
    
 }
 .done-container
 {
     width : 100%;
-    min-width : 200px;
+    min-width : 300px;
     overflow-wrap: break-word;
 }
 

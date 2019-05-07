@@ -19,7 +19,8 @@ export const mutations = {
             title: text,
             completed: false,
             important : text.search("#important")>=1,
-            later : text.search("#later")>=1
+            later : text.search("#later")>=1,
+            isCurrentlyEdited : false
           })
           console.log(state.list[state.list.length-1])
     },
@@ -43,6 +44,14 @@ export const mutations = {
         else
             state.list[index].title = state.list[index].title.replace('#later','');
     },
+    toggleEdit(state,todo) {
+        let index = state.list.indexOf(todo);
+        state.list[index].isCurrentlyEdited = !state.list[index].isCurrentlyEdited;
+    },
+    edit(state,todo) {
+        //let index = state.list.indexOf(todo);
+        //state.list[index].title = text;
+    },
     setTodos(state, payload) {
         payload.forEach(element => {
             state.list.push({
@@ -51,7 +60,8 @@ export const mutations = {
                 title : element['title'],
                 completed : false,
                 important : false,
-                later : false
+                later : false,
+                isCurrentlyEdited : false
         })
             
         });
@@ -104,6 +114,9 @@ export const actions = {
                     commit('toggle', todo)
                 })
         } catch (error) {
+            //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
+            //mais il faudrait supprimer cette ligne avec un vrai backend
+            commit('toggle', todo)
             console.error("actionToggleTodo : " + error);
         }
     },
@@ -127,6 +140,9 @@ export const actions = {
                     commit('toggleImportant', todo)
                 })
         } catch (error) {
+            //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
+            //mais il faudrait supprimer cette ligne avec un vrai backend
+            commit('toggleImportant', todo)
             console.error("actionToggleImportantTodo : " + error);
         }
     },
@@ -150,9 +166,32 @@ export const actions = {
                     commit('toggleLater', todo)
                 })
         } catch (error) {
+            //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
+            //mais il faudrait supprimer cette ligne avec un vrai backend
+            commit('toggleLater', todo)
             console.error("actionToggleLaterTodo : " + error);
         }
-    }
+    },
+    async actionEditTodo({ state, commit }, todo, text){
+        try {
+            await axios.put('https://jsonplaceholder.typicode.com/todos/' + todo.id,{
+                    userId : todo.userId,
+                    id : todo.id,
+                    title : text,
+                    completed : todo.completed,
+                    important : todo.important,
+                    later : todo.later
+                }).then(()=>{
+                    commit('edit', todo)
+                })
+        } catch (error) {
+            //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
+            //mais il faudrait supprimer cette ligne avec un vrai backend
+            commit('edit', todo)
+            commit('toggleEdit', todo)
+            console.error("actionEditTodo : " + error);
+        }
+    },
 }
 
 
