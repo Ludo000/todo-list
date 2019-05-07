@@ -36,6 +36,11 @@ export const mutations = {
             state.list[index].title = state.list[index].title + " #important"
         else
             state.list[index].title = state.list[index].title.replace('#important','');
+        
+        if( state.list[index].title.search("#later") >= 1){
+            state.list[index].title = state.list[index].title.replace('#later','');
+            state.list[index].later = false;
+        }
     },
     toggleLater(state,todo) {
         let index = state.list.indexOf(todo);
@@ -43,6 +48,11 @@ export const mutations = {
             state.list[index].title = state.list[index].title + " #later"
         else
             state.list[index].title = state.list[index].title.replace('#later','');
+
+        if( state.list[index].title.search("#important") >= 1){
+            state.list[index].title = state.list[index].title.replace('#important','');
+            state.list[index].important = false;
+        }
     },
     toggleEdit(state,todo) {
         let index = state.list.indexOf(todo);
