@@ -8,7 +8,7 @@
             <v-container grid-list-md text-xs-center id="sticky" class="sticky-container">
               <v-layout wrap>
               <div v-for="todo in todos" :key="todo.id" class="todo-container">
-                <v-flex v-if="!todo.completed" :class="todo.important ? 'importantTodo' : 'notImportantTodo'" >
+                <v-flex v-if="!todo.completed" :class="todo.important ? 'importantTodo' : ''" >
                   <v-card  color="#ffe260" :class="todo.later ? 'laterTodo' : ''" >
                     <v-card-actions>
                       <v-spacer></v-spacer>
@@ -16,8 +16,8 @@
                     </v-card-actions>
                     <v-card-title>{{ todo.title }}</v-card-title>
                     <v-card-actions>
-                      <v-btn flat color="green" @click="actionToggleImportantTodo(todo)">!</v-btn>
-                      <v-btn flat color="green" @click="actionToggleLaterTodo(todo)">🕐</v-btn>
+                      <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'activeBtn' : ''" >!</v-btn>
+                      <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'activeBtn' : ''" >🕐</v-btn>
                       <v-spacer></v-spacer>
                       <v-btn flat color="green" @click="actionToggleTodo(todo)">✔</v-btn>
                     </v-card-actions>
@@ -41,8 +41,8 @@
                         </v-card-actions>
                       <v-card-title>{{ todo.title }}</v-card-title>
                       <v-card-actions>
-                        <v-btn flat color="green" @click="actionToggleImportantTodo(todo)">!</v-btn>
-                        <v-btn flat color="green" @click="actionToggleLaterTodo(todo)">🕐</v-btn>
+                        <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'activeBtn' : ''">!</v-btn>
+                        <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'activeBtn' : ''">🕐</v-btn>
                         <v-spacer></v-spacer>
                       </v-card-actions>
                      </v-card>
@@ -133,8 +133,9 @@ body{
 
 .todo-container
 {
-    width : 33%;
-    min-width : 200px;
+    width : 25%;
+    min-width : 300px;
+    overflow-wrap: break-word;
 }
 .dones-container
 {
@@ -146,6 +147,7 @@ body{
 {
     width : 100%;
     min-width : 200px;
+    overflow-wrap: break-word;
 }
 
 .bigcard-done
@@ -156,21 +158,22 @@ body{
 
 .importantTodo
 {
-  background-color: red;
+  background-color: #e94817;
 
 }
 
-.notImportantTodo
-{
-  background-color: white;
-
-}
 
 .laterTodo
 {
   background-color: grey;
   font-size: 0.8em;
   
+}
+
+.activeBtn
+{
+  background-color: #e94817;
+
 }
 
 
