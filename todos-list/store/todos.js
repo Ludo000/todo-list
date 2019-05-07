@@ -29,13 +29,29 @@ export const mutations = {
     toggle (state, todo) {
         todo.completed = !todo.completed
     },
+    toggleImportant(state,todo) {
+        let index = state.list.indexOf(todo);
+        if(state.list[index].important = state.list[index].title.search("#important") < 1)
+            state.list[index].title = state.list[index].title + " #important"
+        else
+            state.list[index].title = state.list[index].title.replace('#important','');
+    },
+    toggleLater(state,todo) {
+        let index = state.list.indexOf(todo);
+        if(state.list[index].later = state.list[index].title.search("#later") < 1)
+            state.list[index].title = state.list[index].title + " #later"
+        else
+            state.list[index].title = state.list[index].title.replace('#later','');
+    },
     setTodos(state, payload) {
         payload.forEach(element => {
             state.list.push({
                 id : element['id'],
                 userId : element['userId'],
-                title: element['title'],
-                completed: false
+                title : element['title'],
+                completed : false,
+                important : false,
+                later : false
         })
             
         });
@@ -81,12 +97,60 @@ export const actions = {
                     userId : todo.userId,
                     id : todo.id,
                     title : todo.title,
-                    completed : !todo.completed
+                    completed : !todo.completed,
+                    important : todo.important,
+                    later : todo.later
                 }).then(()=>{
                     commit('toggle', todo)
                 })
         } catch (error) {
             console.error("actionToggleTodo : " + error);
+        }
+    },
+    async actionToggleImportantTodo({ state, commit }, todo){
+        let imp = false
+        let newTitle = ""
+        if(imp = todo.title.search("#important")<1)
+            newTitle = todo.title + " #important"
+        else
+            newTitle = todo.title.replace('#important','');
+
+        try {
+            await axios.put('https://jsonplaceholder.typicode.com/todos/' + todo.id,{
+                    userId : todo.userId,
+                    id : todo.id,
+                    title : newTitle,
+                    completed : todo.completed,
+                    important : imp,
+                    later : todo.later
+                }).then(()=>{
+                    commit('toggleImportant', todo)
+                })
+        } catch (error) {
+            console.error("actionToggleImportantTodo : " + error);
+        }
+    },
+    async actionToggleLaterTodo({ state, commit }, todo){
+        let lat = false
+        let newTitle = ""
+        if(lat = todo.title.search("#later")<1)
+            newTitle = todo.title + " #later"
+        else
+            newTitle = todo.title.replace('#later','');
+            
+        try {
+            await axios.put('https://jsonplaceholder.typicode.com/todos/' + todo.id,{
+                    userId : todo.userId,
+                    id : todo.id,
+                    title : newTitle,
+                    completed : todo.completed,
+                    important : todo.important,
+                    later : lat
+                }).then(()=>{
+                    commit('toggleLater', todo)
+                })
+        } catch (error) {
+            console.error("actionToggleLaterTodo : " + error);
         }
     }
 }
