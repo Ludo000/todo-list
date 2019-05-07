@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-lg>
     <v-layout align-center justify-center row>
-        <v-flex xs10 class="bigcard">
+        <v-flex xs10 class="big-section">
           <v-flex xs12 class="text-xs-center title my-1">À faire</v-flex>
             <input class="todos-input" placeholder="Entrez ici une nouvelle chose à faire" @keyup.enter="addTodo"/>
             <br/><br/>
@@ -27,7 +27,7 @@
               </v-layout>
             </v-container>
           </v-flex>
-          <v-flex xs2 class="bigcard bigcard-done">
+          <v-flex xs2 class="big-section big-section-done">
             <v-flex xs12 class="text-xs-center title my-1">Fait</v-flex>
               <v-container grid-list-md text-xs-center class="sticky-container dones-container">
                 <v-layout wrap>
@@ -100,7 +100,7 @@ body{
   background-color: #e6e6e6;
 }
 
-.bigcard
+.big-section
  {
    background-color :white;
 
@@ -146,7 +146,7 @@ body{
     overflow-wrap: break-word;
 }
 
-.bigcard-done
+.big-section-done
 {
   border-radius : 0 20px 20px 0 ;
   border-right : none;
@@ -159,7 +159,7 @@ body{
 }
 
 
-.later-odo
+.later-todo
 {
   background-color: grey;
   font-size: 0.8em;
