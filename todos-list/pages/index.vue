@@ -8,16 +8,16 @@
             <v-container grid-list-md text-xs-center id="sticky" class="sticky-container">
               <v-layout wrap>
               <div v-for="todo in todos" :key="todo.id" class="todo-container">
-                <v-flex v-if="!todo.completed" :class="todo.important ? 'importantTod-t' : ''" >
-                  <v-card  color="#ffe260" :class="todo.later ? '-' : ''" >
+                <v-flex v-if="!todo.completed" :class="todo.important ? 'important-todo' : ''" >
+                  <v-card  color="#ffe260" :class="todo.later ? 'later-todo' : ''" >
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn flat color="red" @click="actionDeleteTodo(todo)">✖</v-btn>
                     </v-card-actions>
                     <v-card-title>{{ todo.title }}</v-card-title>
                     <v-card-actions>
-                      <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? '-b' : ''" >!</v-btn>
-                      <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? '-b' : ''" >🕐</v-btn>
+                      <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'active-btn' : ''" >!</v-btn>
+                      <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'active-btn' : ''" >🕐</v-btn>
                       <v-spacer></v-spacer>
                       <v-btn flat color="green" @click="actionToggleTodo(todo)">✔</v-btn>
                     </v-card-actions>
@@ -32,8 +32,8 @@
               <v-container grid-list-md text-xs-center class="sticky-container dones-container">
                 <v-layout wrap>
                   <div v-for="todo in todos" :key="todo.id"  class="done-container">
-                    <v-flex v-if="todo.completed" :class="todo.important ? 'importantTod-t' : ''">
-                      <v-card  color="#ffe260" :class="todo.later ? '-' : ''" >
+                    <v-flex v-if="todo.completed" :class="todo.important ? 'important-todo' : ''">
+                      <v-card  color="#ffe260" :class="todo.later ? 'later-todo' : ''" >
                         <v-card-actions>
                           <v-btn flat color="orange" @click="actionToggleTodo(todo)">⮌</v-btn>
                           <v-spacer></v-spacer>
@@ -41,8 +41,8 @@
                         </v-card-actions>
                       <v-card-title>{{ todo.title }}</v-card-title>
                       <v-card-actions>
-                        <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? '-b' : ''">!</v-btn>
-                        <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? '-b' : ''">🕐</v-btn>
+                        <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'active-btn' : ''">!</v-btn>
+                        <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'active-btn' : ''">🕐</v-btn>
                         <v-spacer></v-spacer>
                       </v-card-actions>
                      </v-card>
