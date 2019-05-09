@@ -7,7 +7,7 @@
             <br/><br/>
             <v-container grid-list-md text-xs-center id="sticky" class="sticky-container">
               <v-layout wrap>
-              <div v-for="todo in todos" :key="todo.id">
+              <div v-for="todo in todos" :key="todo.id" class="todo-container">
                 <v-flex v-if="!todo.completed" :class="todo.important ? 'important-todo' : ''" >
                   <v-card  color="#ffe260" :class="todo.later ? 'later-todo' : ''" >
                     <v-card-actions>
@@ -16,7 +16,7 @@
                       <v-btn flat color="red" title="Supprimer cette tâche" @click="actionDeleteTodo(todo)">✖</v-btn>
                     </v-card-actions>
                     <p class="todo-title" v-if="!todo.isCurrentlyEdited">{{ todo.id }}. {{ todo.title }}</p>
-                    <input type="text" v-bind:value="todo.title" v-on:input="todo.newTitle = $event.target.value" v-if="todo.isCurrentlyEdited" class="todos-input"/>
+                    <input type="text" v-bind:value="todo.title" v-on:input="todo.newTitle = $event.target.value" v-if="todo.isCurrentlyEdited" class="todo-input"/>
                     <v-btn flat color="red" title="Valider l'édition de cette tâche" v-if="todo.isCurrentlyEdited" @click="actionEditTodo(todo)">Valider</v-btn>
                     <v-btn flat color="red" title="Annuler l'édition de cette tâche" v-if="todo.isCurrentlyEdited" @click="toggleEdit(todo)">Annuler</v-btn>
                     <v-card-actions>
@@ -44,7 +44,7 @@
                           <v-btn flat color="red" title="Supprimer cette tâche" @click="actionDeleteTodo(todo)" >✖</v-btn>
                         </v-card-actions>
                         <p class="todo-title" v-if="!todo.isCurrentlyEdited">{{ todo.id }}. {{ todo.title }}</p>
-                        <input type="text" v-bind:value="todo.title" v-on:input="todo.newTitle = $event.target.value" v-if="todo.isCurrentlyEdited" class="todos-input"/>
+                        <input type="text" v-bind:value="todo.title" v-on:input="todo.newTitle = $event.target.value" v-if="todo.isCurrentlyEdited" class="todo-input"/>
                         <v-btn flat color="red"  title="Valider l'édition de cette tâche" v-if="todo.isCurrentlyEdited" @click="actionEditTodo(todo)">Valider</v-btn>
                         <v-btn flat color="red"  title="Annuler l'édition de cette tâche" v-if="todo.isCurrentlyEdited" @click="toggleEdit(todo)">Annuler</v-btn>
                         <v-card-actions>
@@ -186,6 +186,20 @@ body{
   padding : 10px;
   overflow-wrap: break-word  ;
 }
+
+.todo-input
+{
+  width : 100%;
+  height : 5vh;
+  background-color : white;
+  border-radius : 50px;
+  border : solid 2px red;
+  max-width : 300px;
+}
+.todo-container
+ {
+   max-width :300px;
+ }
 
 </style>
 
