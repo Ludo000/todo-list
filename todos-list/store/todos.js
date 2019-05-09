@@ -65,6 +65,9 @@ export const mutations = {
     editTitle(state,todo) {
         let index = state.list.indexOf(todo);
         state.list[index].title = state.list[index].newTitle;
+        state.list[index].important = state.list[index].title.search("#important") >= 1;
+        state.list[index].later = state.list[index].title.search("#later") >= 1;
+        state.list[index].isCurrentlyEdited = false;
     },
     setTodos(state, payload) {
         payload.forEach(element => {
@@ -206,13 +209,11 @@ export const actions = {
                     newTitle : todo.newTitle
                 }).then(()=>{
                     commit('editTitle', todo)
-                    commit('toggleEdit', todo)
                 })
         } catch (error) {
             //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
             //mais il faudrait supprimer cette ligne avec un vrai backend
             commit('editTitle', todo)
-            commit('toggleEdit', todo)
             console.error("actionEditTodo : " + error);
         }
     },
