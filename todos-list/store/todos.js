@@ -59,6 +59,8 @@ export const mutations = {
         let index = state.list.indexOf(todo);
         state.list[index].isCurrentlyEdited = !state.list[index].isCurrentlyEdited;
         state.list[index].newTitle = state.list[index].title;
+        state.list[index].important = state.list[index].title.search("#important") >= 1;
+        state.list[index].later = state.list[index].title.search("#later") >= 1;
     },
     editTitle(state,todo) {
         let index = state.list.indexOf(todo);
