@@ -22,19 +22,18 @@ export const mutations = {
             later : text.search("#later")>=1,
             isCurrentlyEdited : false,
             newTitle : ""
-          })
-          console.log(state.list[state.list.length-1])
+          });
     },
     remove (state, todo ) {
-        state.list.splice(state.list.indexOf(todo), 1)
+        state.list.splice(state.list.indexOf(todo), 1);
     },
     toggle (state, todo) {
-        todo.completed = !todo.completed
+        todo.completed = !todo.completed;
     },
     toggleImportant(state,todo) {
         let index = state.list.indexOf(todo);
         if(state.list[index].important = state.list[index].title.search("#important") < 1)
-            state.list[index].title = state.list[index].title + " #important"
+            state.list[index].title = state.list[index].title + " #important";
         else
             state.list[index].title = state.list[index].title.replace('#important','');
         
@@ -46,7 +45,7 @@ export const mutations = {
     toggleLater(state,todo) {
         let index = state.list.indexOf(todo);
         if(state.list[index].later = state.list[index].title.search("#later") < 1)
-            state.list[index].title = state.list[index].title + " #later"
+            state.list[index].title = state.list[index].title + " #later";
         else
             state.list[index].title = state.list[index].title.replace('#later','');
 
@@ -80,8 +79,7 @@ export const mutations = {
                 later : false,
                 isCurrentlyEdited : false,
                 newTitle : ""
-        })
-            
+            });
         });
     }
 }
@@ -107,7 +105,7 @@ export const actions = {
                     later : false,
                     newTitle : ""
                 }).then(()=>{
-                    commit('add', payload)
+                    commit('add', payload);
                 })
         } catch (error) {
             console.error("actionAddTodo : " + error);
@@ -116,7 +114,7 @@ export const actions = {
     async actionDeleteTodo({ state, commit }, todo){
         try {
             await axios.delete('https://jsonplaceholder.typicode.com/todos/' + todo.id).then(()=>{
-                commit('remove', todo)
+                commit('remove', todo);
             })
         } catch (error) {
             console.error("actionDeleteTodo : " + error);
@@ -133,7 +131,7 @@ export const actions = {
                     later : todo.later,
                     newTitle : todo.newTitle
                 }).then(()=>{
-                    commit('toggle', todo)
+                    commit('toggle', todo);
                 })
         } catch (error) {
             //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
@@ -146,7 +144,7 @@ export const actions = {
         let imp = false
         let newTitle = ""
         if(imp = todo.title.search("#important")<1)
-            newTitle = todo.title + " #important"
+            newTitle = todo.title + " #important";
         else
             newTitle = todo.title.replace('#important','');
 
@@ -160,8 +158,8 @@ export const actions = {
                     later : todo.later,
                     newTitle : todo.newTitle
                 }).then(()=>{
-                    commit('toggleImportant', todo)
-                })
+                    commit('toggleImportant', todo);
+                });
         } catch (error) {
             //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
             //mais il faudrait supprimer cette ligne avec un vrai backend
@@ -173,7 +171,7 @@ export const actions = {
         let lat = false
         let newTitle = ""
         if(lat = todo.title.search("#later")<1)
-            newTitle = todo.title + " #later"
+            newTitle = todo.title + " #later";
         else
             newTitle = todo.title.replace('#later','');
             
@@ -187,12 +185,12 @@ export const actions = {
                     later : lat,
                     newTitle : todo.newTitle
                 }).then(()=>{
-                    commit('toggleLater', todo)
-                })
+                    commit('toggleLater', todo);
+                });
         } catch (error) {
             //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
             //mais il faudrait supprimer cette ligne avec un vrai backend
-            commit('toggleLater', todo)
+            commit('toggleLater', todo);
             console.error("actionToggleLaterTodo : " + error);
         }
     },
@@ -208,12 +206,12 @@ export const actions = {
                     later : todo.later,
                     newTitle : todo.newTitle
                 }).then(()=>{
-                    commit('editTitle', todo)
-                })
+                    commit('editTitle', todo);
+                });
         } catch (error) {
             //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
             //mais il faudrait supprimer cette ligne avec un vrai backend
-            commit('editTitle', todo)
+            commit('editTitle', todo);
             console.error("actionEditTodo : " + error);
         }
     },
