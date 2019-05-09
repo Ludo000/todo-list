@@ -123,7 +123,9 @@ body{
  }
 .sticky-container
 {
-  background-color :#fcfcfc;
+  border-top : solid 1px silver;
+  border-bottom : solid 1px silver;
+
   height : 60vh;
   overflow: auto;
 }
@@ -141,14 +143,15 @@ body{
 
 .todo-container
 {
-    width : 25%;
-    min-width : 300px;
+  width : 25%;
+  min-width : 300px;
 }
 .dones-container
 {
-    height : 70vh;
-    min-width : 350px;
-   
+  height : 70vh;
+  min-width : 350px;
+  margin-top : 7.4vh;
+  height : 60vh;
 }
 .done-container
 {
@@ -172,7 +175,6 @@ body{
 
 .later-todo
 {
-  background-color: grey;
   font-size: 0.8em;
   
 }
