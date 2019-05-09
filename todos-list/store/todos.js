@@ -6,15 +6,16 @@ import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(Vuetify)
 Vue.use(Vuex)
-
+const API_URL="https://jsonplaceholder.typicode.com/todos/";
 export const state = () => ({
     list: []
   })
 
 export const mutations = {
     add (state, text) {
+        console.log(state.list.length)
         state.list.push({
-            id : state.list.length+1,
+            id : state.list[state.list.length-1].id + 1,
             userId : 1,
             title: text,
             completed: false,
@@ -87,7 +88,7 @@ export const mutations = {
 export const actions = {
     async actionGetTodos({ state, commit }) {
         try {
-            await axios.get('https://jsonplaceholder.typicode.com/todos').then((r) => {       
+            await axios.get(API_URL).then((r) => {       
                 commit('setTodos', r.data);
               })
         } catch (error) {
@@ -96,7 +97,7 @@ export const actions = {
     },
     async actionAddTodo({ state, commit }, payload){
         try {
-            await axios.post('https://jsonplaceholder.typicode.com/todos',{
+            await axios.post(API_URL,{
                     userId : 1,
                     id : state.list.length,
                     title : payload,
@@ -107,22 +108,24 @@ export const actions = {
                 }).then(()=>{
                     commit('add', payload);
                 })
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("actionAddTodo : " + error);
         }
     },
     async actionDeleteTodo({ state, commit }, todo){
         try {
-            await axios.delete('https://jsonplaceholder.typicode.com/todos/' + todo.id).then(()=>{
+            await axios.delete(API_URL + todo.id).then(()=>{
                 commit('remove', todo);
             })
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("actionDeleteTodo : " + error);
         }
     },
     async actionToggleTodo({ state, commit }, todo){
         try {
-            await axios.put('https://jsonplaceholder.typicode.com/todos/' + todo.id,{
+            await axios.put(API_URL + todo.id,{
                     userId : todo.userId,
                     id : todo.id,
                     title : todo.title,
@@ -133,7 +136,8 @@ export const actions = {
                 }).then(()=>{
                     commit('toggle', todo);
                 })
-        } catch (error) {
+        } 
+        catch (error) {
             //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
             //mais il faudrait supprimer cette ligne avec un vrai backend
             commit('toggle', todo)
@@ -149,7 +153,7 @@ export const actions = {
             newTitle = todo.title.replace('#important','');
 
         try {
-            await axios.put('https://jsonplaceholder.typicode.com/todos/' + todo.id,{
+            await axios.put(API_URL + todo.id,{
                     userId : todo.userId,
                     id : todo.id,
                     title : newTitle,
@@ -160,7 +164,8 @@ export const actions = {
                 }).then(()=>{
                     commit('toggleImportant', todo);
                 });
-        } catch (error) {
+        } 
+        catch (error) {
             //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
             //mais il faudrait supprimer cette ligne avec un vrai backend
             commit('toggleImportant', todo)
@@ -176,7 +181,7 @@ export const actions = {
             newTitle = todo.title.replace('#later','');
             
         try {
-            await axios.put('https://jsonplaceholder.typicode.com/todos/' + todo.id,{
+            await axios.put(API_URL + todo.id,{
                     userId : todo.userId,
                     id : todo.id,
                     title : newTitle,
@@ -187,7 +192,8 @@ export const actions = {
                 }).then(()=>{
                     commit('toggleLater', todo);
                 });
-        } catch (error) {
+        } 
+        catch (error) {
             //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
             //mais il faudrait supprimer cette ligne avec un vrai backend
             commit('toggleLater', todo);
@@ -197,7 +203,7 @@ export const actions = {
     async actionEditTodo({ state, commit }, todo){
         console.log(todo.newTitle)
         try {
-            await axios.put('https://jsonplaceholder.typicode.com/todos/' + todo.id,{
+            await axios.put(API_URL + todo.id,{
                     userId : todo.userId,
                     id : todo.id,
                     title : todo.newTitle,
@@ -208,7 +214,8 @@ export const actions = {
                 }).then(()=>{
                     commit('editTitle', todo);
                 });
-        } catch (error) {
+        } 
+        catch (error) {
             //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
             //mais il faudrait supprimer cette ligne avec un vrai backend
             commit('editTitle', todo);
