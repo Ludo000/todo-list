@@ -15,8 +15,9 @@
                       <v-spacer></v-spacer>
                       <v-btn flat color="red" @click="actionDeleteTodo(todo)">✖</v-btn>
                     </v-card-actions>
-                    <v-card-title v-if="!todo.isCurrentlyEdited">{{ todo.id }}. {{ todo.title }}</v-card-title>
+                    <p class="todo-title" v-if="!todo.isCurrentlyEdited">{{ todo.id }}. {{ todo.title }}</p>
                     <input type="text" :value="todo.title" v-if="todo.isCurrentlyEdited" class="todos-input"  @keyup.enter="actionEditTodo(todo, todo.title)"/>
+
                     <v-card-actions>
                       <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'active-btn' : ''" >!</v-btn>
                       <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'active-btn' : ''" >🕐</v-btn>
@@ -42,7 +43,7 @@
                           <v-spacer></v-spacer>
                           <v-btn flat color="red" @click="actionDeleteTodo(todo)" >✖</v-btn>
                         </v-card-actions>
-                      <v-card-title v-if="!todo.isCurrentlyEdited">{{ todo.id }}. {{ todo.title }}</v-card-title>
+                      <p class="todo-title" v-if="!todo.isCurrentlyEdited">{{ todo.id }}. {{ todo.title }}</p>
                     <input type="text" :value="todo.title" v-if="todo.isCurrentlyEdited" class="todos-input"  @keyup.enter="actionEditTodo(todo, todo.title)"/>
                       <v-card-actions>
                         <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'active-btn' : ''">!</v-btn>
@@ -139,7 +140,6 @@ body{
 {
     width : 25%;
     min-width : 300px;
-    overflow-wrap: break-word;
 }
 .dones-container
 {
@@ -179,7 +179,11 @@ body{
   background-color: #e94817;
 
 }
-
+.todo-title
+{
+  padding : 10px;
+  overflow-wrap: break-word  ;
+}
 
 </style>
 

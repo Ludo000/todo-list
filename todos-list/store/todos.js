@@ -193,6 +193,7 @@ export const actions = {
                     later : todo.later
                 }).then(()=>{
                     commit('edit', todo)
+                    commit('toggleEdit', todo)
                 })
         } catch (error) {
             //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
