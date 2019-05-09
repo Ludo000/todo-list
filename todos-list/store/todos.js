@@ -20,7 +20,8 @@ export const mutations = {
             completed: false,
             important : text.search("#important")>=1,
             later : text.search("#later")>=1,
-            isCurrentlyEdited : false
+            isCurrentlyEdited : false,
+            newTitle : ""
           })
           console.log(state.list[state.list.length-1])
     },
@@ -57,10 +58,11 @@ export const mutations = {
     toggleEdit(state,todo) {
         let index = state.list.indexOf(todo);
         state.list[index].isCurrentlyEdited = !state.list[index].isCurrentlyEdited;
+        state.list[index].newTitle = state.list[index].title;
     },
-    edit(state,todo) {
-        //let index = state.list.indexOf(todo);
-        //state.list[index].title = text;
+    editTitle(state,todo) {
+        let index = state.list.indexOf(todo);
+        state.list[index].title = state.list[index].newTitle;
     },
     setTodos(state, payload) {
         payload.forEach(element => {
@@ -71,7 +73,8 @@ export const mutations = {
                 completed : false,
                 important : false,
                 later : false,
-                isCurrentlyEdited : false
+                isCurrentlyEdited : false,
+                newTitle : ""
         })
             
         });
@@ -94,7 +97,10 @@ export const actions = {
                     userId : 1,
                     id : state.list.length,
                     title : payload,
-                    completed : false
+                    completed : false,
+                    important : false,
+                    later : false,
+                    newTitle : ""
                 }).then(()=>{
                     commit('add', payload)
                 })
@@ -119,7 +125,8 @@ export const actions = {
                     title : todo.title,
                     completed : !todo.completed,
                     important : todo.important,
-                    later : todo.later
+                    later : todo.later,
+                    newTitle : todo.newTitle
                 }).then(()=>{
                     commit('toggle', todo)
                 })
@@ -145,7 +152,8 @@ export const actions = {
                     title : newTitle,
                     completed : todo.completed,
                     important : imp,
-                    later : todo.later
+                    later : todo.later,
+                    newTitle : todo.newTitle
                 }).then(()=>{
                     commit('toggleImportant', todo)
                 })
@@ -171,7 +179,8 @@ export const actions = {
                     title : newTitle,
                     completed : todo.completed,
                     important : todo.important,
-                    later : lat
+                    later : lat,
+                    newTitle : todo.newTitle
                 }).then(()=>{
                     commit('toggleLater', todo)
                 })
@@ -182,23 +191,25 @@ export const actions = {
             console.error("actionToggleLaterTodo : " + error);
         }
     },
-    async actionEditTodo({ state, commit }, todo, text){
+    async actionEditTodo({ state, commit }, todo){
+        console.log(todo.newTitle)
         try {
             await axios.put('https://jsonplaceholder.typicode.com/todos/' + todo.id,{
                     userId : todo.userId,
                     id : todo.id,
-                    title : text,
+                    title : todo.newTitle,
                     completed : todo.completed,
                     important : todo.important,
-                    later : todo.later
+                    later : todo.later,
+                    newTitle : todo.newTitle
                 }).then(()=>{
-                    commit('edit', todo)
+                    commit('editTitle', todo)
                     commit('toggleEdit', todo)
                 })
         } catch (error) {
             //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
             //mais il faudrait supprimer cette ligne avec un vrai backend
-            commit('edit', todo)
+            commit('editTitle', todo)
             commit('toggleEdit', todo)
             console.error("actionEditTodo : " + error);
         }

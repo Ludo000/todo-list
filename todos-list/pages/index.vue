@@ -11,13 +11,14 @@
                 <v-flex v-if="!todo.completed" :class="todo.important ? 'important-todo' : ''" >
                   <v-card  color="#ffe260" :class="todo.later ? 'later-todo' : ''" >
                     <v-card-actions>
-                      <v-btn flat color="red" @click="toggleEdit(todo)">📝</v-btn>
+                      <v-btn flat color="red" @click="toggleEdit(todo)" :class="todo.isCurrentlyEdited ? 'active-btn' : ''">📝</v-btn>
                       <v-spacer></v-spacer>
                       <v-btn flat color="red" @click="actionDeleteTodo(todo)">✖</v-btn>
                     </v-card-actions>
                     <p class="todo-title" v-if="!todo.isCurrentlyEdited">{{ todo.id }}. {{ todo.title }}</p>
-                    <input type="text" :value="todo.title" v-if="todo.isCurrentlyEdited" class="todos-input"  @keyup.enter="actionEditTodo(todo, todo.title)"/>
-
+                    <input type="text" v-bind:value="todo.title" v-on:input="todo.newTitle = $event.target.value" v-if="todo.isCurrentlyEdited" class="todos-input"/>
+                    <v-btn flat color="red"  v-if="todo.isCurrentlyEdited" @click="actionEditTodo(todo)">Valider</v-btn>
+                    <v-btn flat color="red"  v-if="todo.isCurrentlyEdited" @click="toggleEdit(todo)">Annuler</v-btn>
                     <v-card-actions>
                       <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'active-btn' : ''" >!</v-btn>
                       <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'active-btn' : ''" >🕐</v-btn>
@@ -38,20 +39,20 @@
                     <v-flex v-if="todo.completed" :class="todo.important ? 'important-todo' : ''">
                       <v-card  color="#ffe260" :class="todo.later ? 'later-todo' : ''" >
                         <v-card-actions>
-                          <v-btn flat color="red" @click="toggleEdit(todo)">📝</v-btn>
-                          
+                          <v-btn flat color="red" @click="toggleEdit(todo)" :class="todo.isCurrentlyEdited ? 'active-btn' : ''">📝</v-btn>
                           <v-spacer></v-spacer>
                           <v-btn flat color="red" @click="actionDeleteTodo(todo)" >✖</v-btn>
                         </v-card-actions>
-                      <p class="todo-title" v-if="!todo.isCurrentlyEdited">{{ todo.id }}. {{ todo.title }}</p>
-                    <input type="text" :value="todo.title" v-if="todo.isCurrentlyEdited" class="todos-input"  @keyup.enter="actionEditTodo(todo, todo.title)"/>
-                      <v-card-actions>
-                        <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'active-btn' : ''">!</v-btn>
-                        <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'active-btn' : ''">🕐</v-btn>
-
-                        <v-spacer></v-spacer>
-                        <v-btn flat color="orange" @click="actionToggleTodo(todo)">⮌</v-btn>
-                      </v-card-actions>
+                        <p class="todo-title" v-if="!todo.isCurrentlyEdited">{{ todo.id }}. {{ todo.title }}</p>
+                        <input type="text" v-bind:value="todo.title" v-on:input="todo.newTitle = $event.target.value" v-if="todo.isCurrentlyEdited" class="todos-input"/>
+                        <v-btn flat color="red"  v-if="todo.isCurrentlyEdited" @click="actionEditTodo(todo)">Valider</v-btn>
+                        <v-btn flat color="red"  v-if="todo.isCurrentlyEdited" @click="toggleEdit(todo)">Annuler</v-btn>
+                        <v-card-actions>
+                          <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'active-btn' : ''">!</v-btn>
+                          <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'active-btn' : ''">🕐</v-btn>
+                          <v-spacer></v-spacer>
+                          <v-btn flat color="orange" @click="actionToggleTodo(todo)">⮌</v-btn>
+                        </v-card-actions>
                      </v-card>
                    </v-flex>
                 </div>
@@ -66,15 +67,17 @@
 
 import { mapMutations, mapActions } from 'vuex'
 
-
 export default {
+
   mounted : function() {
     this.$store.dispatch('todos/actionGetTodos')
+    
   },
   computed: {
     todos () {
       return this.$store.state.todos.list
     }
+
   },
   methods: {
     addTodo (e) {
@@ -97,7 +100,7 @@ export default {
      actionToggleTodo: 'todos/actionToggleTodo',
      actionToggleImportantTodo: 'todos/actionToggleImportantTodo',
      actionToggleLaterTodo: 'todos/actionToggleLaterTodo',
-     actionEditTodo: 'todos/actionEditTodo'
+     actionEditTodo : 'todos/actionEditTodo'
     })
     
   }
