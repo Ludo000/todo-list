@@ -11,19 +11,19 @@
                 <v-flex v-if="!todo.completed" :class="todo.important ? 'important-todo' : ''" >
                   <v-card  color="#ffe260" :class="todo.later ? 'later-todo' : ''" >
                     <v-card-actions>
-                      <v-btn flat color="red" @click="toggleEdit(todo)" :class="todo.isCurrentlyEdited ? 'active-btn' : ''">📝</v-btn>
+                      <v-btn flat color="red" title="Editer cette tâche" @click="toggleEdit(todo)" :class="todo.isCurrentlyEdited ? 'active-btn' : ''">📝</v-btn>
                       <v-spacer></v-spacer>
-                      <v-btn flat color="red" @click="actionDeleteTodo(todo)">✖</v-btn>
+                      <v-btn flat color="red" title="Supprimer cette tâche" @click="actionDeleteTodo(todo)">✖</v-btn>
                     </v-card-actions>
                     <p class="todo-title" v-if="!todo.isCurrentlyEdited">{{ todo.id }}. {{ todo.title }}</p>
                     <input type="text" v-bind:value="todo.title" v-on:input="todo.newTitle = $event.target.value" v-if="todo.isCurrentlyEdited" class="todos-input"/>
-                    <v-btn flat color="red"  v-if="todo.isCurrentlyEdited" @click="actionEditTodo(todo)">Valider</v-btn>
-                    <v-btn flat color="red"  v-if="todo.isCurrentlyEdited" @click="toggleEdit(todo)">Annuler</v-btn>
+                    <v-btn flat color="red" title="Valider l'édition de cette tâche" v-if="todo.isCurrentlyEdited" @click="actionEditTodo(todo)">Valider</v-btn>
+                    <v-btn flat color="red" title="Annuler l'édition de cette tâche" v-if="todo.isCurrentlyEdited" @click="toggleEdit(todo)">Annuler</v-btn>
                     <v-card-actions>
-                      <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'active-btn' : ''" >!</v-btn>
-                      <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'active-btn' : ''" >🕐</v-btn>
+                      <v-btn flat color="green" title="Basculer l'état 'important' de cette tâche" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'active-btn' : ''" >!</v-btn>
+                      <v-btn flat color="green" title="Basculer l'état 'plus tard' de cette tâche" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'active-btn' : ''" >🕐</v-btn>
                       <v-spacer></v-spacer>
-                      <v-btn flat color="green" @click="actionToggleTodo(todo)">✔</v-btn>
+                      <v-btn flat color="green" title="Marquer cette tâche comme complétée" @click="actionToggleTodo(todo)">✔</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-flex>
@@ -39,19 +39,19 @@
                     <v-flex v-if="todo.completed" :class="todo.important ? 'important-todo' : ''">
                       <v-card  color="#ffe260" :class="todo.later ? 'later-todo' : ''" >
                         <v-card-actions>
-                          <v-btn flat color="red" @click="toggleEdit(todo)" :class="todo.isCurrentlyEdited ? 'active-btn' : ''">📝</v-btn>
+                          <v-btn flat color="red" title="Editer cette tâche" @click="toggleEdit(todo)" :class="todo.isCurrentlyEdited ? 'active-btn' : ''">📝</v-btn>
                           <v-spacer></v-spacer>
-                          <v-btn flat color="red" @click="actionDeleteTodo(todo)" >✖</v-btn>
+                          <v-btn flat color="red" title="Supprimer cette tâche" @click="actionDeleteTodo(todo)" >✖</v-btn>
                         </v-card-actions>
                         <p class="todo-title" v-if="!todo.isCurrentlyEdited">{{ todo.id }}. {{ todo.title }}</p>
                         <input type="text" v-bind:value="todo.title" v-on:input="todo.newTitle = $event.target.value" v-if="todo.isCurrentlyEdited" class="todos-input"/>
-                        <v-btn flat color="red"  v-if="todo.isCurrentlyEdited" @click="actionEditTodo(todo)">Valider</v-btn>
-                        <v-btn flat color="red"  v-if="todo.isCurrentlyEdited" @click="toggleEdit(todo)">Annuler</v-btn>
+                        <v-btn flat color="red"  title="Valider l'édition de cette tâche" v-if="todo.isCurrentlyEdited" @click="actionEditTodo(todo)">Valider</v-btn>
+                        <v-btn flat color="red"  title="Annuler l'édition de cette tâche" v-if="todo.isCurrentlyEdited" @click="toggleEdit(todo)">Annuler</v-btn>
                         <v-card-actions>
-                          <v-btn flat color="green" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'active-btn' : ''">!</v-btn>
-                          <v-btn flat color="green" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'active-btn' : ''">🕐</v-btn>
+                          <v-btn flat color="green" title="Basculer l'état 'important de cette tâche'" @click="actionToggleImportantTodo(todo)" :class="todo.important ? 'active-btn' : ''">!</v-btn>
+                          <v-btn flat color="green" title="Basculer l'état 'plus tard de cette tâche'" @click="actionToggleLaterTodo(todo)" :class="todo.later ? 'active-btn' : ''">🕐</v-btn>
                           <v-spacer></v-spacer>
-                          <v-btn flat color="orange" @click="actionToggleTodo(todo)">⮌</v-btn>
+                          <v-btn flat color="orange" title="Marquer cette tâche comme non-complétée" @click="actionToggleTodo(todo)">⮌</v-btn>
                         </v-card-actions>
                      </v-card>
                    </v-flex>
