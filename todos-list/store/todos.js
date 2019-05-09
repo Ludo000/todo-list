@@ -75,7 +75,7 @@ export const mutations = {
                 id : element['id'],
                 userId : element['userId'],
                 title : element['title'],
-                completed : false,
+                completed : element['completed'],
                 important : false,
                 later : false,
                 isCurrentlyEdited : false,

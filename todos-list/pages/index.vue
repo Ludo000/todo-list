@@ -7,7 +7,7 @@
             <br/><br/>
             <v-container grid-list-md text-xs-center id="sticky" class="sticky-container">
               <v-layout wrap>
-              <div v-for="todo in todos" :key="todo.id" class="todo-container">
+              <div v-for="todo in todos" :key="todo.id">
                 <v-flex v-if="!todo.completed" :class="todo.important ? 'important-todo' : ''" >
                   <v-card  color="#ffe260" :class="todo.later ? 'later-todo' : ''" >
                     <v-card-actions>
@@ -141,11 +141,7 @@ body{
 
 }
 
-.todo-container
-{
-  width : 25%;
-  min-width : 300px;
-}
+
 .dones-container
 {
   height : 70vh;
@@ -186,6 +182,7 @@ body{
 }
 .todo-title
 {
+  max-width : 300px;
   padding : 10px;
   overflow-wrap: break-word  ;
 }
