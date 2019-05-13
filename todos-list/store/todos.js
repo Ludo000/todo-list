@@ -11,9 +11,22 @@ export const state = () => ({
     list: []
   })
 
+
 export const mutations = {
     add (state, text) {
-        console.log(state.list.length)
+        let nbImportant = text.search("#important");
+        let nbLater = text.search("#later");
+
+        for(var i=1;i<nbImportant;i++)
+            text = text.replace('#important','');
+        for(var i=0;i<nbLater;i++)
+            text = text.replace('#later','');
+
+        if(nbLater >= 1)
+            text = text + " #later";
+        if(nbImportant >= 1)
+            text = text + " #important";
+
         state.list.push({
             id : state.list[state.list.length-1].id + 1,
             userId : 1,
@@ -33,40 +46,72 @@ export const mutations = {
     },
     toggleImportant(state,todo) {
         let index = state.list.indexOf(todo);
-        if(state.list[index].important = state.list[index].title.search("#important") < 1)
+        let nbImportant = state.list[index].title.search("#important");
+
+        if(nbImportant < 1){
             state.list[index].title = state.list[index].title + " #important";
-        else
-            state.list[index].title = state.list[index].title.replace('#important','');
-        
-        if( state.list[index].title.search("#later") >= 1){
-            state.list[index].title = state.list[index].title.replace('#later','');
+            state.list[index].important = true;
             state.list[index].later = false;
+            let nbLater = state.list[index].title.search("#later");
+            for(var i=0;i<nbLater;i++)
+                state.list[index].title = state.list[index].title.replace('#later','');
         }
+        else{
+            for(var i=0;i<nbImportant;i++)
+                state.list[index].title = state.list[index].title.replace('#important','');
+            state.list[index].important = false;
+        }
+        
+        
     },
     toggleLater(state,todo) {
         let index = state.list.indexOf(todo);
-        if(state.list[index].later = state.list[index].title.search("#later") < 1)
-            state.list[index].title = state.list[index].title + " #later";
-        else
-            state.list[index].title = state.list[index].title.replace('#later','');
+        let nbLater = state.list[index].title.search("#later");
 
-        if( state.list[index].title.search("#important") >= 1){
-            state.list[index].title = state.list[index].title.replace('#important','');
+        if(nbLater < 1){
+            state.list[index].title = state.list[index].title + " #later";
+            state.list[index].later = true;
             state.list[index].important = false;
+            let nbImportant = state.list[index].title.search("#important");
+            for(var i=0;i<nbImportant;i++)
+                state.list[index].title = state.list[index].title.replace('#important','');
         }
+        else{
+            for(var i=0;i<nbLater;i++)
+                state.list[index].title = state.list[index].title.replace('#later','');
+            state.list[index].later = false;
+        }
+
+       
     },
     toggleEdit(state,todo) {
         let index = state.list.indexOf(todo);
         state.list[index].isCurrentlyEdited = !state.list[index].isCurrentlyEdited;
         state.list[index].newTitle = state.list[index].title;
-        state.list[index].important = state.list[index].title.search("#important") >= 1;
-        state.list[index].later = state.list[index].title.search("#later") >= 1;
+        let nbImportant = state.list[index].title.search("#important");
+        let nbLater = state.list[index].title.search("#later");
+        state.list[index].important = nbImportant >= 1;
+        state.list[index].later = nbLater >= 1;
     },
     editTitle(state,todo) {
         let index = state.list.indexOf(todo);
         state.list[index].title = state.list[index].newTitle;
-        state.list[index].important = state.list[index].title.search("#important") >= 1;
-        state.list[index].later = state.list[index].title.search("#later") >= 1;
+
+        let nbImportant = state.list[index].title.search("#important");
+        let nbLater = state.list[index].title.search("#later");
+        state.list[index].important = nbImportant >= 1;
+        state.list[index].later = nbLater >= 1;
+
+        for(var i=1;i<nbImportant;i++)
+            state.list[index].title = state.list[index].title.replace('#important','');
+        for(var i=0;i<nbLater;i++)
+            state.list[index].title = state.list[index].title.replace('#later','');
+
+        if(nbLater >= 1)
+            state.list[index].title = state.list[index].title + " #later";
+        if(nbImportant >= 1)
+            state.list[index].title = state.list[index].title + " #important";
+
         state.list[index].isCurrentlyEdited = false;
     },
     setTodos(state, payload) {
