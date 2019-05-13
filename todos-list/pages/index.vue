@@ -8,8 +8,8 @@
             <v-container grid-list-md text-xs-center id="sticky" class="sticky-container">
               <v-layout wrap>
               <div v-for="todo in todos" :key="todo.id" class="todo-container">
-                <v-flex v-if="!todo.completed" :class="todo.important ? 'important-todo' : ''" >
-                  <v-card  color="#ffe260" :class="todo.later ? 'later-todo' : ''" >
+                <v-flex v-if="!todo.completed" :class="todo.important ? 'important-todo' : todo.later ? 'later-todo' : ''" >
+                  <v-card  color="#ffe260" >
                     <v-card-actions>
                       <v-btn flat color="red" title="Editer cette tâche" @click="toggleEdit(todo)" :class="todo.isCurrentlyEdited ? 'active-btn' : ''">📝</v-btn>
                       <v-spacer></v-spacer>
@@ -36,8 +36,8 @@
               <v-container grid-list-md text-xs-center class="sticky-container dones-container">
                 <v-layout wrap>
                   <div v-for="todo in todos" :key="todo.id"  class="done-container">
-                    <v-flex v-if="todo.completed" :class="todo.important ? 'important-todo' : ''">
-                      <v-card  color="#ffe260" :class="todo.later ? 'later-todo' : ''" >
+                    <v-flex v-if="todo.completed" :class="todo.important ? 'important-todo' : todo.later ? 'later-todo' : ''">
+                      <v-card  color="#ffe260">
                         <v-card-actions>
                           <v-btn flat color="red" title="Editer cette tâche" @click="toggleEdit(todo)" :class="todo.isCurrentlyEdited ? 'active-btn' : ''">📝</v-btn>
                           <v-spacer></v-spacer>
@@ -172,7 +172,8 @@ body{
 .later-todo
 {
   font-size: 0.8em;
-  
+  background-color : rgb(146, 150, 145);
+  opacity: 0.7;
 }
 
 .active-btn
