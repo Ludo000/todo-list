@@ -8,9 +8,9 @@
           class="todos-input"
           placeholder="Entrez ici une nouvelle chose à faire"
           @keyup.enter="addTodo"
-        >
-        <br>
-        <br>
+        />
+        <br />
+        <br />
         <v-container grid-list-md text-xs-center id="sticky" class="sticky-container">
           <v-layout wrap>
             <div v-for="todo in todos" :key="todo.id" class="todo-container">
@@ -46,7 +46,7 @@
                     v-on:input="todo.newTitle = $event.target.value"
                     v-if="todo.isCurrentlyEdited"
                     class="todo-input"
-                  >
+                  />
                   <v-btn
                     flat
                     color="red"
@@ -116,17 +116,18 @@
                       @click="actionDeleteTodo(todo)"
                     >✖</v-btn>
                   </v-card-actions>
-                  <p
-                    class="todo-title"
-                    v-if="!todo.isCurrentlyEdited"
-                  >{{ todo.id }}. {{ todo.title }}</p>
+                  <p class="todo-title" v-if="!todo.isCurrentlyEdited">
+                    {{ todo.id }}. {{ todo.title }}
+                    <b v-if="todo.important">#important</b>
+                    <i v-if="todo.later">#later</i>
+                  </p>
                   <input
                     type="text"
                     v-bind:value="todo.title"
                     v-on:input="todo.newTitle = $event.target.value"
                     v-if="todo.isCurrentlyEdited"
                     class="todo-input"
-                  >
+                  />
                   <v-btn
                     flat
                     color="red"
