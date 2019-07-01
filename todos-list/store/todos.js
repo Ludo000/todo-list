@@ -26,19 +26,19 @@ later : a boolean wich is true if the text contains at least one '#later'
 newText : the input string removed from all the #important' or '#later' substrings
 */
 var getTagsFromTextAndRemoveThem = (text) => {
-    let important = false, later = false, newText = text;
+    let important = false, later = false;
     let nbImportant = text.search("#important");
     let nbLater = text.search("#later");
 
     for (var i = 0; i < nbImportant; i++)
-        newText = newText.replace('#important', '');
+        text = text.replace('#important', '');
     for (var i = 0; i < nbLater; i++)
-        newText = newText.replace('#later', '');
+        text = text.replace('#later', '');
 
     if (!(important = nbImportant >= 1)) {
         later = nbLater >= 1;
     }
-    return { important, later, newText };
+    return { important, later, text };
 };
 
 export const mutations = {
@@ -81,8 +81,7 @@ export const mutations = {
     },
     editTitle(state, todo) {
         let index = state.list.indexOf(todo);
-        state.list[index].title = state.list[index].newTitle;
-        let { important, later, text } = getTagsFromTextAndRemoveThem(state.list[index].title);
+        let { important, later, text } = getTagsFromTextAndRemoveThem(state.list[index].newTitle);
         state.list[index].important = important;
         state.list[index].later = later;
         state.list[index].title = text;
