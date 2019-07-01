@@ -140,7 +140,6 @@ export const actions = {
         }
     },
     async actionToggleTodo({ state, commit }, todo) {
-        let index = state.list.indexOf(todo);
         try {
             await axios.put(API_URL + todo.id, {
                 userId: todo.userId,
@@ -184,6 +183,7 @@ export const actions = {
         }
     },
     async actionToggleLaterTodo({ state, commit }, todo) {
+        let index = state.list.indexOf(todo);
         try {
             await axios.put(API_URL + todo.id, {
                 userId: todo.userId,
@@ -198,8 +198,8 @@ export const actions = {
             });
         }
         catch (error) {
-            //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
-            //mais il faudrait supprimer cette ligne avec un vrai backend
+            //we're still comiting since we know the backend wouldn't let us make PUT requests
+            //remove this line when using a real backend allowing PUT requests :
             commit('toggleLater', todo);
             console.error("actionToggleLaterTodo : " + error);
         }
@@ -220,8 +220,8 @@ export const actions = {
             });
         }
         catch (error) {
-            //on commit qd meme car on sait que le backend ne peut pas faire de PUT et donc que cela va échouer
-            //mais il faudrait supprimer cette ligne avec un vrai backend
+            //we're still comiting since we know the backend wouldn't let us make PUT requests
+            //remove this line when using a real backend allowing PUT requests :
             commit('editTitle', todo);
             console.error("actionEditTodo : " + error);
         }
