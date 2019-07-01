@@ -3,9 +3,12 @@ import Vuex from 'vuex'
 import axios from 'axios';
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
-Vue.use(Vuetify)
-Vue.use(Vuex)
+Vue.use(Vuetify, {
+    iconfont: 'mdi' // 'md' || 'mdi' || 'fa' || 'fa4'
+});
+Vue.use(Vuex);
 const API_URL = "https://jsonplaceholder.typicode.com/todos/";
 export const state = () => ({
     list: []
