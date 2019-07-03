@@ -5,6 +5,7 @@
         :class="todo.important ? 'todo-top-imp' : todo.later ? 'todo-top-later' : showDone ? 'todo-top-done' : 'todo-top'"
       >
         <v-btn
+          v-if="!showDone"
           flat
           color="white"
           title="Basculer l'état 'important' de cette tâche"
@@ -13,6 +14,7 @@
           <v-icon>error_outline</v-icon>
         </v-btn>
         <v-btn
+          v-if="!showDone"
           flat
           color="white"
           title="Basculer l'état 'plus tard' de cette tâche"
@@ -29,8 +31,8 @@
             @click="actionToggleTodo(todo)"
             slot-scope="{ hover }"
           >
-            <v-icon v-if="!hover">check_box_outline_blank</v-icon>
-            <v-icon v-if="hover">check_box</v-icon>
+            <v-icon v-if="!hover && !showDone">check_box_outline_blank</v-icon>
+            <v-icon v-if="hover || showDone">check_box</v-icon>
           </v-btn>
         </v-hover>
       </v-card-actions>

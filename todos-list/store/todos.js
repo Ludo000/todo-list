@@ -130,29 +130,53 @@ export const actions = {
         }
     },
     async actionToggleTodo({ state, commit }, todo) {
-        todo.completed = !todo.completed;
-        todo.isCurrentlyEdited = false;
+        let completed = !todo.completed;
+        let isCurrentlyEdited = false;
         try {
             await axios
-                .put(API_URL + todo.id, todo)
+                .put(API_URL + todo.id, new Todo(
+                    todo.id,
+                    todo.userId,
+                    todo.title,
+                    completed,
+                    todo.important,
+                    todo.later,
+                    isCurrentlyEdited,
+                    todo.newTitle
+                ))
                 .then(() => {
+                    todo.completed = completed;
+                    todo.isCurrentlyEdited = isCurrentlyEdited;
                     commit('update', todo);
                 })
         }
         catch (error) {
             //we're still comiting since we know the backend wouldn't let us make PUT requests
             //remove this line when using a real backend allowing PUT requests :
-            commit('update', todo)
+            commit('update', newTodo)
             console.error("actionToggleTodo : " + error);
         }
     },
     async actionToggleImportantTodo({ state, commit }, todo) {
-        todo.important = !todo.important;
-        if (todo.important)
-            todo.later = false;
+        let important = !todo.important;
+        let later = todo.later;
+        if (important)
+            later = false;
         try {
-            await axios.put(API_URL + todo.id, todo)
+            await axios
+                .put(API_URL + todo.id, new Todo(
+                    todo.id,
+                    todo.userId,
+                    todo.title,
+                    todo.completed,
+                    important,
+                    later,
+                    false,
+                    todo.newTitle
+                ))
                 .then(() => {
+                    todo.important = important;
+                    todo.later = later;
                     commit('update', todo);
                 });
         }
@@ -164,12 +188,25 @@ export const actions = {
         }
     },
     async actionToggleLaterTodo({ state, commit }, todo) {
-        todo.later = !todo.later;
-        if (todo.later)
-            todo.important = false;
+        let later = !todo.later;
+        let important = todo.important;
+        if (later)
+            important = false;
         try {
-            await axios.put(API_URL + todo.id, todo)
+            await axios
+                .put(API_URL + todo.id, new Todo(
+                    todo.id,
+                    todo.userId,
+                    todo.title,
+                    todo.completed,
+                    important,
+                    later,
+                    false,
+                    todo.newTitle
+                ))
                 .then(() => {
+                    todo.important = important;
+                    todo.later = later;
                     commit('update', todo);
                 });
         }
@@ -181,10 +218,20 @@ export const actions = {
         }
     },
     async actionEditTodo({ state, commit }, todo) {
-        todo.title = todo.newTitle;
+        let title = todo.newTitle;
         try {
-            await axios.put(API_URL + todo.id, todo)
+            await axios.put(API_URL + todo.id, new Todo(
+                todo.id,
+                todo.userId,
+                title,
+                todo.completed,
+                important,
+                later,
+                false,
+                todo.newTitle
+            ))
                 .then(() => {
+                    todo.title = title;
                     commit('toggleEdit', todo);
                 });
         }
