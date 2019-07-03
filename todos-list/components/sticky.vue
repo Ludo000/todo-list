@@ -7,7 +7,7 @@
         <v-btn
           v-if="!showDone"
           flat
-          color="white"
+          :color="todo.important ? 'white' : 'rgb(100, 100, 100)'"
           title="Basculer l'état 'important' de cette tâche"
           @click="actionToggleImportantTodo(todo)"
         >
@@ -16,7 +16,7 @@
         <v-btn
           v-if="!showDone"
           flat
-          color="white"
+          :color="todo.later ? 'white' : 'rgb(100, 100, 100)'"
           title="Basculer l'état 'plus tard' de cette tâche"
           @click="actionToggleLaterTodo(todo)"
         >
@@ -31,7 +31,7 @@
             @click="actionToggleTodo(todo)"
             slot-scope="{ hover }"
           >
-            <v-icon v-if="!hover && !showDone">check_box_outline_blank</v-icon>
+            <v-icon v-if="!hover && !showDone" color="rgb(100, 100, 100)">check_box_outline_blank</v-icon>
             <v-icon v-if="hover || showDone">check_box</v-icon>
           </v-btn>
         </v-hover>
@@ -122,7 +122,7 @@ export default {
 }
 
 .todo-top {
-  background-color: #ffae00;
+  background-color: #ffd373;
 }
 .todo-top-done {
   background-color: #6bc25f;
