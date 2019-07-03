@@ -15,31 +15,45 @@
           <v-layout wrap>
             <div v-for="todo in todos" :key="todo.id" class="todo-container">
               <v-flex v-if="!todo.completed">
-                <v-card color="#ffe260">
-                  <v-card-actions>
+                <v-card color="#ffed9e">
+                  <v-card-actions
+                    :class="todo.important ? 'todo-top-imp' : todo.later ? 'todo-top-later' : 'todo-top'"
+                  >
                     <v-btn
                       flat
-                      title="Editer cette tâche"
-                      @click="toggleEdit(todo)"
-                      :class="todo.isCurrentlyEdited ? 'active-btn' : ''"
-                      :color="todo.isCurrentlyEdited ? 'white' : 'black'"
+                      color="white"
+                      title="Basculer l'état 'important' de cette tâche"
+                      @click="actionToggleImportantTodo(todo)"
                     >
-                      <v-icon>edit</v-icon>
+                      <v-icon>error_outline</v-icon>
+                    </v-btn>
+                    <v-btn
+                      flat
+                      color="white"
+                      title="Basculer l'état 'plus tard' de cette tâche"
+                      @click="actionToggleLaterTodo(todo)"
+                    >
+                      <v-icon>schedule</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn
-                      flat
-                      color="red"
-                      title="Supprimer cette tâche"
-                      @click="actionDeleteTodo(todo)"
-                    >
-                      <v-icon>delete</v-icon>
-                    </v-btn>
+                    <v-hover>
+                      <v-btn
+                        flat
+                        color="white"
+                        title="Marquer cette tâche comme complétée"
+                        @click="actionToggleTodo(todo)"
+                        slot-scope="{ hover }"
+                      >
+                        <v-icon v-if="!hover">check_box_outline_blank</v-icon>
+                        <v-icon v-if="hover">check_box</v-icon>
+                      </v-btn>
+                    </v-hover>
                   </v-card-actions>
-                  <p class="todo-title" v-if="!todo.isCurrentlyEdited">
+
+                  <p @click="toggleEdit(todo)" class="todo-title" v-if="!todo.isCurrentlyEdited">
                     {{ todo.id }}. {{ todo.title }}
                     <b v-if="todo.important">#important</b>
-                    <i v-if="todo.later">#later</i>
+                    <b v-if="todo.later">#later</b>
                   </p>
                   <input
                     type="text"
@@ -62,34 +76,16 @@
                     v-if="todo.isCurrentlyEdited"
                     @click="toggleEdit(todo)"
                   >Annuler</v-btn>
-                  <v-card-actions
-                    :class="todo.important ? 'todo-bottom-imp' : todo.later ? 'todo-bottom-later' : 'todo-bottom'"
-                  >
+                  <v-card-actions>
                     <v-btn
                       flat
-                      title="Basculer l'état 'important' de cette tâche"
-                      @click="actionToggleImportantTodo(todo)"
-                      color="white"
+                      color="red"
+                      title="Supprimer cette tâche"
+                      @click="actionDeleteTodo(todo)"
                     >
-                      <v-icon>error_outline</v-icon>
-                    </v-btn>
-                    <v-btn
-                      flat
-                      title="Basculer l'état 'plus tard' de cette tâche"
-                      @click="actionToggleLaterTodo(todo)"
-                      color="white"
-                    >
-                      <v-icon>schedule</v-icon>
+                      <v-icon>delete</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn
-                      flat
-                      color="white"
-                      title="Marquer cette tâche comme complétée"
-                      @click="actionToggleTodo(todo)"
-                    >
-                      <v-icon>done</v-icon>
-                    </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-flex>
@@ -103,31 +99,40 @@
           <v-layout wrap>
             <div v-for="todo in todos" :key="todo.id" class="done-container">
               <v-flex v-if="todo.completed">
-                <v-card color="#ffe260">
-                  <v-card-actions>
+                <v-card color="#c5ffbd">
+                  <v-card-actions
+                    :class="todo.important ? 'todo-top-imp' : todo.later ? 'todo-top-later' : 'todo-top-done'"
+                  >
                     <v-btn
                       flat
-                      title="Editer cette tâche"
-                      @click="toggleEdit(todo)"
-                      :class="todo.isCurrentlyEdited ? 'active-btn' : ''"
-                      :color="todo.isCurrentlyEdited ? 'white' : 'black'"
+                      color="white"
+                      title="Basculer l'état 'important de cette tâche'"
+                      @click="actionToggleImportantTodo(todo)"
                     >
-                      <v-icon>edit</v-icon>
+                      <v-icon>error_outline</v-icon>
+                    </v-btn>
+                    <v-btn
+                      flat
+                      color="white"
+                      title="Basculer l'état 'plus tard de cette tâche'"
+                      @click="actionToggleLaterTodo(todo)"
+                    >
+                      <v-icon>schedule</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
                     <v-btn
                       flat
-                      color="red"
-                      title="Supprimer cette tâche"
-                      @click="actionDeleteTodo(todo)"
+                      color="white"
+                      title="Marquer cette tâche comme non-complétée"
+                      @click="actionToggleTodo(todo)"
                     >
-                      <v-icon>delete</v-icon>
+                      <v-icon>check_box</v-icon>
                     </v-btn>
                   </v-card-actions>
-                  <p class="todo-title" v-if="!todo.isCurrentlyEdited">
+                  <p @click="toggleEdit(todo)" class="todo-title" v-if="!todo.isCurrentlyEdited">
                     {{ todo.id }}. {{ todo.title }}
                     <b v-if="todo.important">#important</b>
-                    <i v-if="todo.later">#later</i>
+                    <b v-if="todo.later">#later</b>
                   </p>
                   <input
                     type="text"
@@ -150,34 +155,16 @@
                     v-if="todo.isCurrentlyEdited"
                     @click="toggleEdit(todo)"
                   >Annuler</v-btn>
-                  <v-card-actions
-                    :class="todo.important ? 'todo-bottom-imp' : todo.later ? 'todo-bottom-later' : 'todo-bottom'"
-                  >
+                  <v-card-actions>
                     <v-btn
                       flat
-                      title="Basculer l'état 'important de cette tâche'"
-                      @click="actionToggleImportantTodo(todo)"
-                      color="white"
+                      color="red"
+                      title="Supprimer cette tâche"
+                      @click="actionDeleteTodo(todo)"
                     >
-                      <v-icon>error_outline</v-icon>
-                    </v-btn>
-                    <v-btn
-                      flat
-                      title="Basculer l'état 'plus tard de cette tâche'"
-                      @click="actionToggleLaterTodo(todo)"
-                      color="white"
-                    >
-                      <v-icon>schedule</v-icon>
+                      <v-icon>delete</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn
-                      flat
-                      color="white"
-                      title="Marquer cette tâche comme non-complétée"
-                      @click="actionToggleTodo(todo)"
-                    >
-                      <v-icon>undo</v-icon>
-                    </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-flex>
@@ -229,8 +216,10 @@ export default {
 </script>
 
 <style>
-body {
+body,
+html {
   background-color: #e6e6e6;
+  overflow: auto;
 }
 
 .big-section {
@@ -244,7 +233,7 @@ body {
 .sticky-container {
   border-top: solid 1px silver;
   border-bottom: solid 1px silver;
-
+  background-color: rgb(253, 253, 253);
   height: 60vh;
   overflow: auto;
 }
@@ -290,21 +279,23 @@ body {
   height: 5vh;
   background-color: white;
   border-radius: 50px;
-  border: solid 2px red;
   max-width: 300px;
-  padding-left: 5%;
-  padding-right: 5%;
+  padding: 5%;
+  margin: 5%;
 }
 .todo-container {
   max-width: 300px;
 }
-.todo-bottom {
-  background-color: #ff8800;
+.todo-top {
+  background-color: #ffae00;
 }
-.todo-bottom-imp {
+.todo-top-done {
+  background-color: #6bc25f;
+}
+.todo-top-imp {
   background-color: #e94817;
 }
-.todo-bottom-later {
+.todo-top-later {
   background-color: rgb(146, 150, 145);
 }
 </style>
