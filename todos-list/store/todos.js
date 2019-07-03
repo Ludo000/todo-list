@@ -1,9 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 import axios from 'axios';
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css';
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import Todo from '../model/Todo';
 
 Vue.use(Vuetify, {
     iconfont: 'mdi' // 'md' || 'mdi' || 'fa' || 'fa4'
@@ -27,57 +28,48 @@ newText : the input string removed from all the #important' or '#later' substrin
 */
 var getTagsFromTextAndRemoveThem = (text) => {
     let important = false, later = false;
+    let newText = text;
     let nbImportant = text.search("#important");
     let nbLater = text.search("#later");
 
     for (var i = 0; i < nbImportant; i++)
-        text = text.replace('#important', '');
+        newText = newText.replace('#important', '');
     for (var i = 0; i < nbLater; i++)
-        text = text.replace('#later', '');
+        newText = newText.replace('#later', '');
 
     if (!(important = nbImportant >= 1)) {
         later = nbLater >= 1;
     }
-    return { important, later, text };
+    return { important, later, newText };
 };
 
 export const mutations = {
-    add(state, text) {
-        let { important, later, newText } = getTagsFromTextAndRemoveThem(text);
-        state.list.push({
-            id: state.list[state.list.length - 1].id + 1,
-            userId: 1,
-            title: newText,
-            completed: false,
-            important: important,
-            later: later,
-            isCurrentlyEdited: false,
-            newTitle: ""
-        });
+    add(state, payload) {
+        let { important, later, newText } = getTagsFromTextAndRemoveThem(payload);
+        state.list.push(
+            new Todo(
+                state.list[state.list.length - 1].id + 1,
+                1,
+                newText,
+                false,
+                important,
+                later,
+                false,
+                ""
+            )
+        );
     },
     remove(state, todo) {
         state.list.splice(state.list.indexOf(todo), 1);
     },
-    toggle(state, todo) {
-        todo.completed = !todo.completed;
-    },
-    toggleImportant(state, todo) {
+    update(state, todo) {
         let index = state.list.indexOf(todo);
-        state.list[index].important = !state.list[index].important;
-        if (state.list[index].important)
-            state.list[index].later = false;
-
-    },
-    toggleLater(state, todo) {
-        let index = state.list.indexOf(todo);
-        state.list[index].later = !state.list[index].later;
-        if (state.list[index].later)
-            state.list[index].important = false;
+        state.list[index] = todo;
     },
     toggleEdit(state, todo) {
         let index = state.list.indexOf(todo);
-        state.list[index].isCurrentlyEdited = !state.list[index].isCurrentlyEdited;
-        state.list[index].newTitle = state.list[index].title;
+        todo.isCurrentlyEdited = !todo.isCurrentlyEdited;
+        state.list[index] = todo;
     },
     editTitle(state, todo) {
         let index = state.list.indexOf(todo);
@@ -89,16 +81,9 @@ export const mutations = {
     },
     setTodos(state, payload) {
         payload.forEach(element => {
-            state.list.push({
-                id: element['id'],
-                userId: element['userId'],
-                title: element['title'],
-                completed: element['completed'],
-                important: false,
-                later: false,
-                isCurrentlyEdited: false,
-                newTitle: ""
-            });
+            state.list.push(
+                new Todo(element['id'], element['userId'], element['title'], element['completed'], false, false, false, "")
+            );
         });
     }
 }
@@ -115,15 +100,18 @@ export const actions = {
     },
     async actionAddTodo({ state, commit }, payload) {
         try {
-            await axios.post(API_URL, {
-                userId: 1,
-                id: state.list.length,
-                title: payload,
-                completed: false,
-                important: false,
-                later: false,
-                newTitle: ""
-            }).then(() => {
+            await axios.post(API_URL,
+                new Todo(
+                    state.list.length,
+                    1,
+                    payload,
+                    false,
+                    false,
+                    false,
+                    false,
+                    ""
+                )
+            ).then(() => {
                 commit('add', payload);
             })
         }
@@ -142,89 +130,68 @@ export const actions = {
         }
     },
     async actionToggleTodo({ state, commit }, todo) {
+        todo.completed = !todo.completed;
+        todo.isCurrentlyEdited = false;
         try {
-            await axios.put(API_URL + todo.id, {
-                userId: todo.userId,
-                id: todo.id,
-                title: todo.title,
-                completed: !todo.completed,
-                important: todo.important,
-                later: todo.later,
-                newTitle: todo.newTitle
-            }).then(() => {
-                commit('toggle', todo);
-            })
+            await axios
+                .put(API_URL + todo.id, todo)
+                .then(() => {
+                    commit('update', todo);
+                })
         }
         catch (error) {
             //we're still comiting since we know the backend wouldn't let us make PUT requests
             //remove this line when using a real backend allowing PUT requests :
-            commit('toggle', todo)
+            commit('update', todo)
             console.error("actionToggleTodo : " + error);
         }
     },
     async actionToggleImportantTodo({ state, commit }, todo) {
-        let index = state.list.indexOf(todo);
+        todo.important = !todo.important;
+        if (todo.important)
+            todo.later = false;
         try {
-            await axios.put(API_URL + todo.id, {
-                userId: todo.userId,
-                id: todo.id,
-                title: newTitle,
-                completed: todo.completed,
-                important: !state.list[index].important,
-                later: todo.later,
-                newTitle: todo.newTitle
-            }).then(() => {
-                commit('toggleImportant', todo);
-            });
+            await axios.put(API_URL + todo.id, todo)
+                .then(() => {
+                    commit('update', todo);
+                });
         }
         catch (error) {
             //we're still comiting since we know the backend wouldn't let us make PUT requests
             //remove this line when using a real backend allowing PUT requests :
-            commit('toggleImportant', todo)
+            commit('update', todo)
             console.error("actionToggleImportantTodo : " + error);
         }
     },
     async actionToggleLaterTodo({ state, commit }, todo) {
-        let index = state.list.indexOf(todo);
+        todo.later = !todo.later;
+        if (todo.later)
+            todo.important = false;
         try {
-            await axios.put(API_URL + todo.id, {
-                userId: todo.userId,
-                id: todo.id,
-                title: newTitle,
-                completed: todo.completed,
-                important: todo.important,
-                later: !state.list[index].later,
-                newTitle: todo.newTitle
-            }).then(() => {
-                commit('toggleLater', todo);
-            });
+            await axios.put(API_URL + todo.id, todo)
+                .then(() => {
+                    commit('update', todo);
+                });
         }
         catch (error) {
             //we're still comiting since we know the backend wouldn't let us make PUT requests
             //remove this line when using a real backend allowing PUT requests :
-            commit('toggleLater', todo);
+            commit('update', todo);
             console.error("actionToggleLaterTodo : " + error);
         }
     },
     async actionEditTodo({ state, commit }, todo) {
-        console.log(todo.newTitle)
+        todo.title = todo.newTitle;
         try {
-            await axios.put(API_URL + todo.id, {
-                userId: todo.userId,
-                id: todo.id,
-                title: todo.newTitle,
-                completed: todo.completed,
-                important: todo.important,
-                later: todo.later,
-                newTitle: todo.newTitle
-            }).then(() => {
-                commit('editTitle', todo);
-            });
+            await axios.put(API_URL + todo.id, todo)
+                .then(() => {
+                    commit('toggleEdit', todo);
+                });
         }
         catch (error) {
             //we're still comiting since we know the backend wouldn't let us make PUT requests
             //remove this line when using a real backend allowing PUT requests :
-            commit('editTitle', todo);
+            commit('toggleEdit', todo);
             console.error("actionEditTodo : " + error);
         }
     },
