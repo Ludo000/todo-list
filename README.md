@@ -2,8 +2,8 @@
 Todo-list using Vue.js,Nuxt and Vuex.
 
 # Install required dependancies
-  npm install
+  npm instal
   
-#Run
+# Run
   npm run dev
   
