@@ -1,2 +1,9 @@
 # todo-list
-Réalisation d‘une Todo-list en vue.js avec Nuxt et Vuex
+Todo-list using Vue.js,Nuxt and Vuex.
+
+# Install required dependancies
+  npm install
+  
+#Run
+  npm run dev
+  
